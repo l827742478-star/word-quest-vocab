@@ -35,7 +35,7 @@ button { cursor: pointer; border: 0; }
 .eyebrow, .mini-label, .dialog-kicker, .quiz-top, .cover-kicker, .cover-top, .cover-bottom, .step-no { font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif; letter-spacing: .12em; }
 .eyebrow { display: flex; align-items: center; gap: 9px; color: var(--orange-dark); font-size: 11px; font-weight: 700; }
 .live-dot { width: 7px; height: 7px; background: var(--orange); border-radius: 50%; box-shadow: 0 0 0 5px rgba(255,106,61,.12); }
-.hero h1 { max-width: 580px; margin: 20px 0 18px; font-size: clamp(44px, 5.5vw, 76px); line-height: 1.05; letter-spacing: -.075em; font-weight: 900; }
+.hero h1 { max-width: 760px; margin: 20px 0 18px; font-size: clamp(52px, 7.2vw, 104px); line-height: 1.02; letter-spacing: -.085em; font-weight: 900; }
 h1 em, h2 em { color: var(--orange); font-style: normal; }
 .hero-lead { max-width: 470px; color: var(--muted); font-size: 16px; line-height: 1.9; }
 .hero-actions { display: flex; align-items: center; gap: 23px; margin-top: 28px; }
