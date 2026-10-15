@@ -18,6 +18,7 @@
       </a>
       <nav class="topnav" aria-label="主导航">
         <a href="#story">剧情词场</a>
+        <a href="#library">雅思词库 <span class="nav-count">3,632</span></a>
         <a href="#how">怎么背</a>
         <a href="#review">今日复盘</a>
       </nav>
@@ -37,7 +38,7 @@
           <div class="hero-proof" aria-label="产品特点">
             <span><strong>4</strong> 幕剧情</span>
             <span><strong>48</strong> 个词</span>
-            <span><strong>8</strong> 分钟/幕</span>
+            <span><strong id="vocabTotal">3,632</strong> 雅思词条</span>
           </div>
         </div>
         <div class="hero-art" aria-label="剧情卡片预览">
@@ -78,9 +79,32 @@
         <div class="chapter-grid" id="chapterGrid"></div>
       </section>
 
+      <section class="library-section section-shell" id="library">
+        <div class="library-heading">
+          <div>
+            <div class="eyebrow"><span class="eyebrow-index">02</span> 雅思词库</div>
+            <h2>整套词库，<br /><em>今天先点亮一页。</em></h2>
+          </div>
+          <p>不只看 48 个剧情词。这里收进 22 个主题、3,632 条雅思备考词条：输入英文或中文搜索，按主题筛选，点一下就记入你的本地进度。</p>
+        </div>
+
+        <div class="library-shell">
+          <div class="library-toolbar">
+            <label class="library-search"><span aria-hidden="true">⌕</span><input id="librarySearch" type="search" placeholder="搜索单词、中文释义或主题" autocomplete="off" /></label>
+            <label class="library-select"><span>主题</span><select id="libraryTopic"><option value="all">全部主题</option></select></label>
+            <label class="library-select"><span>排序</span><select id="librarySort"><option value="default">词库顺序</option><option value="az">A → Z</option><option value="unmastered">未点亮优先</option></select></label>
+          </div>
+          <div class="library-meta"><span id="libraryResultCount">3,632 个词条</span><span><b id="libraryMasteredCount">0</b> 个已点亮 · 点击卡片切换</span></div>
+          <div class="vocab-grid" id="libraryGrid"></div>
+          <div class="library-empty" id="libraryEmpty" hidden>没有找到匹配词条，换个关键词试试。</div>
+          <div class="library-pagination"><button id="libraryPrev" type="button">← 上一页</button><span id="libraryPage">第 1 / 152 页</span><button id="libraryNext" type="button">下一页 →</button></div>
+        </div>
+        <p class="source-note">词库数据来源：<a href="https://github.com/LynnShaw/vocabulary_for_ielts" target="_blank" rel="noreferrer">vocabulary_for_ielts</a>，页面内的剧情词场、记忆钩子和复盘题为原创内容。</p>
+      </section>
+
       <section class="method-section section-shell" id="how">
         <div class="method-heading">
-          <div class="eyebrow"><span class="eyebrow-index">02</span> 无痛方法</div>
+          <div class="eyebrow"><span class="eyebrow-index">03</span> 无痛方法</div>
           <h2>三步，把“背过”<br /><em>变成“用过”。</em></h2>
         </div>
         <div class="method-steps">
@@ -92,7 +116,7 @@
 
       <section class="review-section section-shell" id="review">
         <div class="review-copy">
-          <div class="eyebrow"><span class="eyebrow-index">03</span> 今日复盘</div>
+          <div class="eyebrow"><span class="eyebrow-index">04</span> 今日复盘</div>
           <h2>最后一页，<br /><em>把记忆锁上。</em></h2>
           <p>完成任意一幕后，来做 3 道轻量复盘。答对就点亮今天的词徽章，进度会自动保存在你的浏览器里。</p>
           <div class="review-badge"><span class="badge-star">✦</span><span><b id="badgeTitle">未点亮</b><small id="badgeSub">完成一幕后解锁</small></span></div>
@@ -128,6 +152,7 @@
     </dialog>
 
     <div class="toast" id="toast" role="status"></div>
+    <script src="ielts-vocab.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

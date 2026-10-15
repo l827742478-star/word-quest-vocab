@@ -35,12 +35,41 @@ const quizData = [
   { question: '“A good ______ makes a hard thing easier to remember.”', options: ['deadline', 'story', 'alarm', 'risk'], answer: 'story', tip: 'story = 故事。好的上下文，就是记忆的挂钩。' }
 ];
 
-const STORAGE_KEY = 'word-quest-progress-v1';
-const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{"lit":[],"streak":1,"quizBest":0}');
+const vocabulary = Array.isArray(window.ieltsVocabulary) ? window.ieltsVocabulary : [];
+const STORAGE_KEY = 'word-quest-progress-v2';
+const LEGACY_STORAGE_KEY = 'word-quest-progress-v1';
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_STORAGE_KEY);
+    const saved = raw ? JSON.parse(raw) : {};
+    return {
+      lit: Array.isArray(saved.lit) ? [...new Set(saved.lit)] : [],
+      mastered: Array.isArray(saved.mastered) ? [...new Set(saved.mastered.map(Number).filter(Number.isFinite))] : [],
+      streak: Number(saved.streak) || 1,
+      quizBest: Number(saved.quizBest) || 0
+    };
+  } catch {
+    return { lit: [], mastered: [], streak: 1, quizBest: 0 };
+  }
+}
+
+const state = loadState();
 const chapterGrid = document.querySelector('#chapterGrid');
 const dialog = document.querySelector('#chapterDialog');
 const wordDeck = document.querySelector('#wordDeck');
 const toast = document.querySelector('#toast');
+const libraryGrid = document.querySelector('#libraryGrid');
+const librarySearch = document.querySelector('#librarySearch');
+const libraryTopic = document.querySelector('#libraryTopic');
+const librarySort = document.querySelector('#librarySort');
+const libraryEmpty = document.querySelector('#libraryEmpty');
+const libraryResultCount = document.querySelector('#libraryResultCount');
+const libraryPageLabel = document.querySelector('#libraryPage');
+const libraryPrev = document.querySelector('#libraryPrev');
+const libraryNext = document.querySelector('#libraryNext');
+const PAGE_SIZE = 24;
+let libraryPage = 1;
 let activeChapter = chapters[0];
 let currentQuiz = 0;
 let quizAnswered = false;
@@ -56,6 +85,8 @@ function updateProgress() {
   document.querySelector('#progressText').textContent = `${done} / ${total}`;
   document.querySelector('#progressBar').style.width = `${Math.min(100, (done / total) * 100)}%`;
   document.querySelector('#streakCount').textContent = state.streak;
+  document.querySelector('#vocabTotal').textContent = vocabulary.length.toLocaleString('en-US');
+  document.querySelector('#libraryMasteredCount').textContent = state.mastered.length.toLocaleString('en-US');
   const badgeTitle = document.querySelector('#badgeTitle');
   const badgeSub = document.querySelector('#badgeSub');
   if (state.quizBest >= 3) { badgeTitle.textContent = '剧情记忆官'; badgeSub.textContent = '今日复盘已满分'; }
@@ -68,6 +99,78 @@ function showToast(message) {
   toast.classList.add('show');
   clearTimeout(showToast.timer);
   showToast.timer = setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+function escapeHTML(value = '') {
+  return String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+}
+
+function setupLibraryTopics() {
+  const topics = [...new Map(vocabulary.map((entry) => [entry.sort, entry.topic])).entries()]
+    .sort((a, b) => a[0] - b[0]);
+  libraryTopic.innerHTML = '<option value="all">全部主题</option>' + topics.map(([sort, topic]) => `<option value="${sort}">${escapeHTML(topic)}</option>`).join('');
+}
+
+function getFilteredVocabulary() {
+  const query = librarySearch.value.trim().toLowerCase();
+  const topic = libraryTopic.value;
+  const sort = librarySort.value;
+  const result = vocabulary.filter((entry) => {
+    const topicMatch = topic === 'all' || String(entry.sort) === topic;
+    const searchText = `${entry.word} ${entry.meaning} ${entry.topic}`.toLowerCase();
+    return topicMatch && (!query || searchText.includes(query));
+  });
+  if (sort === 'az') result.sort((a, b) => a.word.localeCompare(b.word));
+  if (sort === 'unmastered') result.sort((a, b) => Number(state.mastered.includes(a.id)) - Number(state.mastered.includes(b.id)) || a.id - b.id);
+  return result;
+}
+
+function renderLibrary() {
+  const filtered = getFilteredVocabulary();
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  libraryPage = Math.min(libraryPage, totalPages);
+  const pageItems = filtered.slice((libraryPage - 1) * PAGE_SIZE, libraryPage * PAGE_SIZE);
+  libraryResultCount.textContent = `${filtered.length.toLocaleString('en-US')} 个词条`;
+  libraryPageLabel.textContent = filtered.length ? `第 ${libraryPage} / ${totalPages} 页` : '暂无结果';
+  libraryPrev.disabled = libraryPage <= 1;
+  libraryNext.disabled = libraryPage >= totalPages;
+  libraryEmpty.hidden = filtered.length > 0;
+  libraryGrid.innerHTML = pageItems.map((entry) => {
+    const mastered = state.mastered.includes(entry.id);
+    return `<button class="vocab-card ${mastered ? 'mastered' : ''}" data-vocab-id="${entry.id}" type="button">
+      <span class="vocab-card-top"><span>#${String(entry.id).padStart(4, '0')}</span><span>${escapeHTML(entry.topic)}</span></span>
+      <strong>${escapeHTML(entry.word)}</strong>
+      <small>${escapeHTML(entry.phonetic || '音标待补')}</small>
+      <p>${escapeHTML(entry.meaning)}</p>
+      <span class="vocab-card-foot"><span>${mastered ? '已点亮 · 再看一眼' : '点亮这个词'}</span><span>${mastered ? '✦' : '＋'}</span></span>
+    </button>`;
+  }).join('');
+  libraryGrid.querySelectorAll('.vocab-card').forEach((card) => card.addEventListener('click', () => {
+    const id = Number(card.dataset.vocabId);
+    const index = state.mastered.indexOf(id);
+    if (index >= 0) {
+      state.mastered.splice(index, 1);
+      showToast('已取消点亮，可以稍后再复习。');
+    } else {
+      state.mastered.push(id);
+      showToast(`已点亮：${card.querySelector('strong').textContent}`);
+    }
+    saveState();
+    renderLibrary();
+  }));
+}
+
+function setupLibrary() {
+  setupLibraryTopics();
+  [librarySearch, libraryTopic, librarySort].forEach((control) => control.addEventListener('input', () => {
+    libraryPage = 1;
+    renderLibrary();
+  }));
+  libraryPrev.addEventListener('click', () => { if (libraryPage > 1) { libraryPage -= 1; renderLibrary(); } });
+  libraryNext.addEventListener('click', () => {
+    const totalPages = Math.max(1, Math.ceil(getFilteredVocabulary().length / PAGE_SIZE));
+    if (libraryPage < totalPages) { libraryPage += 1; renderLibrary(); }
+  });
 }
 
 function renderChapters() {
@@ -159,4 +262,6 @@ document.querySelector('#resetProgress').addEventListener('click', () => {
 
 renderChapters();
 renderQuiz();
+setupLibrary();
+renderLibrary();
 updateProgress();
