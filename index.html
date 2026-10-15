@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#17151f" />
-    <meta name="description" content="词境爽文局：把高频英语词汇塞进一条会反转的剧情里，边看边记，零压开背。" />
+    <meta name="description" content="词境爽文局：把整套雅思词汇写进 22 个会反转的剧情篇章，边看边记，零压开背。" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <title>词境爽文局 · 无痛背词实验室</title>
     <link rel="stylesheet" href="styles.css" />
@@ -18,7 +18,7 @@
       </a>
       <nav class="topnav" aria-label="主导航">
         <a href="#story">剧情词场</a>
-        <a href="#library">雅思词库 <span class="nav-count">3,632</span></a>
+        <a href="#library">雅思剧情宇宙 <span class="nav-count">22 章</span></a>
         <a href="#how">怎么背</a>
         <a href="#review">今日复盘</a>
       </nav>
@@ -30,15 +30,15 @@
         <div class="hero-copy">
           <div class="eyebrow"><span class="live-dot"></span>今日词场 · 第 01 幕已解锁</div>
           <h1>不背单词，<em>让单词自己上场。</em></h1>
-          <p class="hero-lead">把词义藏进爽文剧情，把记忆点写进反转。每天 8 分钟，看完一幕，顺手拿下 12 个高频词。</p>
+          <p class="hero-lead">把整套雅思词汇藏进 22 个爽文篇章。每次追一幕、点一条线索，再用复盘把词义锁进记忆。</p>
           <div class="hero-actions">
             <a class="primary-button" href="#story">进入第一幕 <span>↗</span></a>
             <button class="text-button" id="quickQuiz" type="button">先来一道热身题 <span>→</span></button>
           </div>
           <div class="hero-proof" aria-label="产品特点">
-            <span><strong>4</strong> 幕剧情</span>
-            <span><strong>48</strong> 个词</span>
-            <span><strong id="vocabTotal">3,632</strong> 雅思词条</span>
+            <span><strong>22</strong> 个剧情篇章</span>
+            <span><strong>3,632</strong> 个词</span>
+            <span><strong id="vocabTotal">3,632</strong> 条线索</span>
           </div>
         </div>
         <div class="hero-art" aria-label="剧情卡片预览">
@@ -60,7 +60,7 @@
       <section class="stats-strip section-shell" aria-label="学习状态">
         <div class="stat-lead"><span class="mini-label">YOUR RUN</span><strong id="streakCount">1</strong><span>天连续开背</span></div>
         <div class="progress-wrap">
-          <div class="progress-label"><span>本周词场进度</span><span id="progressText">0 / 48</span></div>
+        <div class="progress-label"><span>整套剧情进度</span><span id="progressText">0 / 3,632</span></div>
           <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
         </div>
         <div class="quote-mark">“</div>
@@ -82,24 +82,23 @@
       <section class="library-section section-shell" id="library">
         <div class="library-heading">
           <div>
-            <div class="eyebrow"><span class="eyebrow-index">02</span> 雅思词库</div>
-            <h2>整套词库，<br /><em>今天先点亮一页。</em></h2>
+            <div class="eyebrow"><span class="eyebrow-index">02</span> 雅思剧情宇宙</div>
+            <h2>整套词库，<br /><em>全部写进剧情。</em></h2>
           </div>
-          <p>不只看 48 个剧情词。这里收进 22 个主题、3,632 条雅思备考词条：输入英文或中文搜索，按主题筛选，点一下就记入你的本地进度。</p>
+          <p>不是把单词摊成词表，而是拆成 22 个主题篇章。每个词都会在剧情段落里出现，点击线索就能看到释义、音标、例句和记忆钩子。</p>
         </div>
 
         <div class="library-shell">
           <div class="library-toolbar">
-            <label class="library-search"><span aria-hidden="true">⌕</span><input id="librarySearch" type="search" placeholder="搜索单词、中文释义或主题" autocomplete="off" /></label>
-            <label class="library-select"><span>主题</span><select id="libraryTopic"><option value="all">全部主题</option></select></label>
-            <label class="library-select"><span>排序</span><select id="librarySort"><option value="default">词库顺序</option><option value="az">A → Z</option><option value="unmastered">未点亮优先</option></select></label>
+            <label class="library-search"><span aria-hidden="true">⌕</span><input id="librarySearch" type="search" placeholder="搜主题、剧情标题或单词" autocomplete="off" /></label>
+            <label class="library-select"><span>篇章</span><select id="libraryTopic"><option value="all">全部篇章</option></select></label>
+            <label class="library-select"><span>排序</span><select id="librarySort"><option value="default">剧情顺序</option><option value="volume">词量最多</option><option value="unmastered">未点亮优先</option></select></label>
           </div>
-          <div class="library-meta"><span id="libraryResultCount">3,632 个词条</span><span><b id="libraryMasteredCount">0</b> 个已点亮 · 点击卡片切换</span></div>
-          <div class="vocab-grid" id="libraryGrid"></div>
-          <div class="library-empty" id="libraryEmpty" hidden>没有找到匹配词条，换个关键词试试。</div>
-          <div class="library-pagination"><button id="libraryPrev" type="button">← 上一页</button><span id="libraryPage">第 1 / 152 页</span><button id="libraryNext" type="button">下一页 →</button></div>
+          <div class="library-meta"><span id="libraryResultCount">22 个剧情篇章</span><span><b id="libraryMasteredCount">0</b> 个词已点亮 · 点进篇章开始追</span></div>
+          <div class="episode-grid" id="libraryGrid"></div>
+          <div class="library-empty" id="libraryEmpty" hidden>没有找到匹配篇章，换个关键词试试。</div>
         </div>
-        <p class="source-note">词库数据来源：<a href="https://github.com/LynnShaw/vocabulary_for_ielts" target="_blank" rel="noreferrer">vocabulary_for_ielts</a>，页面内的剧情词场、记忆钩子和复盘题为原创内容。</p>
+        <p class="source-note">词库数据来自公开项目 <a href="https://github.com/LynnShaw/vocabulary_for_ielts" target="_blank" rel="noreferrer">vocabulary_for_ielts</a>；本页面把每个词重新编排进原创剧情、线索卡、记忆钩子和复盘流程。</p>
       </section>
 
       <section class="method-section section-shell" id="how">
@@ -118,7 +117,7 @@
         <div class="review-copy">
           <div class="eyebrow"><span class="eyebrow-index">04</span> 今日复盘</div>
           <h2>最后一页，<br /><em>把记忆锁上。</em></h2>
-          <p>完成任意一幕后，来做 3 道轻量复盘。答对就点亮今天的词徽章，进度会自动保存在你的浏览器里。</p>
+          <p>追完任意一幕，来做 3 道轻量复盘。故事里点亮过的词会进入你的本地进度，下一次打开还能接着追。</p>
           <div class="review-badge"><span class="badge-star">✦</span><span><b id="badgeTitle">未点亮</b><small id="badgeSub">完成一幕后解锁</small></span></div>
         </div>
         <div class="quiz-panel" id="quizPanel">
@@ -148,6 +147,39 @@
         <p class="dialog-desc" id="dialogDesc"></p>
         <div class="word-deck" id="wordDeck"></div>
         <div class="dialog-footer"><span id="dialogProgress">0 / 12 已点亮</span><button class="primary-button" id="dialogQuiz" type="button">去做复盘 <span>→</span></button></div>
+      </div>
+    </dialog>
+
+    <dialog class="episode-dialog" id="episodeDialog">
+      <div class="episode-dialog-inner">
+        <button class="dialog-close" id="closeEpisodeDialog" type="button" aria-label="关闭">×</button>
+        <div class="dialog-kicker" id="episodeKicker">CASE 01 · NATURAL WORLD</div>
+        <h2 id="episodeTitle">她以为只是一次天气预警。</h2>
+        <p class="dialog-desc" id="episodeDesc"></p>
+        <div class="episode-status"><span id="episodeSceneLabel">SCENE 01 / 14</span><span id="episodeProgress">0 / 164 个词已点亮</span></div>
+        <div class="episode-layout">
+          <div class="episode-story-column">
+            <div class="scene-tabs" id="episodeScenes"></div>
+            <article class="scene-paper">
+              <div class="scene-paper-top"><span id="episodeSceneKicker">THE FIRST CLUE</span><span>STORY CLUE</span></div>
+              <div class="scene-story" id="episodeStory"></div>
+            </article>
+          </div>
+          <aside class="episode-insight" id="episodeInsight">
+            <div class="insight-label">线索档案 / WORD FILE</div>
+            <div class="insight-placeholder" id="episodeInsightPlaceholder">点击故事里的高亮词，查看它在这一幕里为什么出现。</div>
+            <div class="insight-content" id="episodeInsightContent" hidden>
+              <span class="insight-topic" id="episodeInsightTopic">自然地理</span>
+              <h3 id="episodeInsightWord">atmosphere</h3>
+              <div class="insight-phonetic" id="episodeInsightPhonetic">/ˈætməsfɪə(r)/</div>
+              <p class="insight-meaning" id="episodeInsightMeaning">n. 大气层，大气圈；气氛</p>
+              <div class="insight-hook"><span>爽文记忆钩子</span><p id="episodeInsightHook"></p></div>
+              <div class="insight-example"><span>剧情里的英文</span><p id="episodeInsightExample"></p></div>
+              <button class="insight-button" id="episodeMasterButton" type="button">点亮这条线索 ✦</button>
+            </div>
+          </aside>
+        </div>
+        <div class="episode-footer"><button class="episode-nav-button" id="episodePrev" type="button">← 上一幕</button><span id="episodeFooterLabel">追完这一幕，再去复盘</span><button class="episode-nav-button" id="episodeNext" type="button">下一幕 →</button></div>
       </div>
     </dialog>
 
